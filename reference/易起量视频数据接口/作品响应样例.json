@@ -1,0 +1,36 @@
+{
+  "data": {
+    "objects": [
+      {
+        "exportId": "EXAMPLE_OPAQUE_EXPORT_ID",
+        "globalExportId": "EXAMPLE_GLOBAL_EXPORT_ID",
+        "nonce": "EXAMPLE_NONCE",
+        "description": "这是已脱敏的视频文案示例",
+        "coverUrl": "https://media.example.com/example-cover.jpg",
+        "createTime": 1794121716,
+        "likeCount": 899,
+        "favCount": 826,
+        "forwardCount": 218,
+        "commentCount": 15,
+        "deleteTime": 0,
+        "accountInfo": {
+          "username": "v_target@finder",
+          "nickName": "示例作者",
+          "headImgUrl": "https://media.example.com/example-avatar.jpg",
+          "signature": "示例简介"
+        },
+        "flag": {
+          "isPrivate": false,
+          "isChecking": false,
+          "hasShoppingCart": false
+        },
+        "shoppingcartJumpinfo": {},
+        "finderComponent": {},
+        "profitableType": 0,
+        "inquireInfo": {}
+      }
+    ],
+    "continueFlag": true,
+    "lastBuf": "EXAMPLE_NEXT_CURSOR"
+  }
+}

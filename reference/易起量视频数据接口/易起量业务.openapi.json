@@ -1,0 +1,1023 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "易起量现有业务接口：视频号作品数据",
+    "version": "1.0.0",
+    "description": "2026-11-09。本机源码核对，未请求生产路由验收。替换示例服务器地址；使用易起量业务JWT，不是微信Cookie。没有MP4文件下载接口。"
+  },
+  "servers": [
+    {
+      "url": "https://yiqiliang.example.com",
+      "description": "占位地址，替换为实际易起量部署域名"
+    }
+  ],
+  "security": [
+    {
+      "YiqiliangJWT": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "YiqiliangJWT": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "完整值：JWT <业务登录token>；不是Bearer，不是微信Cookie。"
+      }
+    },
+    "schemas": {
+      "Author": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "目标作者 finder_id，供作品查询使用"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称"
+          },
+          "headImgUrl": {
+            "type": "string",
+            "description": "头像URL"
+          },
+          "signature": {
+            "type": "string",
+            "description": "简介"
+          },
+          "authImgUrl": {
+            "type": "string",
+            "description": "认证图片"
+          },
+          "authProfession": {
+            "type": "string",
+            "description": "认证展示信息"
+          },
+          "exportUsername": {
+            "type": "string",
+            "description": "附加作者标识，原样保留"
+          },
+          "gender": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "liveStatus": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "permission": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "roi2PromoteFlag": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "isPrivate": {
+            "type": "integer",
+            "format": "int64",
+            "description": "样本为整数，未经完整枚举核验"
+          }
+        },
+        "required": [
+          "username"
+        ],
+        "additionalProperties": true
+      },
+      "Video": {
+        "type": "object",
+        "properties": {
+          "exportId": {
+            "type": "string",
+            "description": "网页作品标识；不可转成数值"
+          },
+          "globalExportId": {
+            "type": "string",
+            "description": "另一作品标识；不承诺跨会话稳定性"
+          },
+          "nonce": {
+            "type": "string",
+            "description": "分享接口 nonceId 的来源"
+          },
+          "description": {
+            "type": "string",
+            "description": "视频文案，不含自动语音转写"
+          },
+          "coverUrl": {
+            "type": "string",
+            "description": "封面，不是视频文件地址"
+          },
+          "createTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unix秒时间戳"
+          },
+          "likeCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "爱心点赞数，按易起量映射",
+            "nullable": true
+          },
+          "favCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "拇指点赞数，按易起量映射；不能当作收藏数",
+            "nullable": true
+          },
+          "forwardCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "转发/分享数量",
+            "nullable": true
+          },
+          "commentCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "评论数量，不是正文",
+            "nullable": true
+          },
+          "accountInfo": {
+            "$ref": "#/components/schemas/Author"
+          },
+          "flag": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          },
+          "deleteTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "样本为0，状态语义未核验"
+          },
+          "shoppingcartJumpinfo": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          },
+          "finderComponent": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          },
+          "profitableType": {
+            "type": "integer",
+            "format": "int64",
+            "description": "枚举未核验"
+          },
+          "inquireInfo": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "exportId"
+        ],
+        "additionalProperties": true
+      },
+      "LoginToken": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "用于生成二维码，原样保留整个data"
+              }
+            },
+            "required": [
+              "token"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "LoginStatus": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "integer",
+                "format": "int64",
+                "description": "0等待，5且acctStatus=1已扫码，1且acctStatus=1已确认，4过期"
+              },
+              "acctStatus": {
+                "type": "integer",
+                "format": "int64",
+                "description": "账户状态，按状态组合判断"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "selfAccountInfo": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "目标作者 finder_id，供作品查询使用"
+                  },
+                  "nickName": {
+                    "type": "string",
+                    "description": "昵称"
+                  },
+                  "headImgUrl": {
+                    "type": "string",
+                    "description": "头像URL"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "description": "简介"
+                  },
+                  "authImgUrl": {
+                    "type": "string",
+                    "description": "认证图片"
+                  },
+                  "authProfession": {
+                    "type": "string",
+                    "description": "认证展示信息"
+                  },
+                  "exportUsername": {
+                    "type": "string",
+                    "description": "附加作者标识，原样保留"
+                  },
+                  "gender": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "liveStatus": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "permission": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "roi2PromoteFlag": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "isPrivate": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "样本为整数，未经完整枚举核验"
+                  }
+                },
+                "required": [
+                  "username"
+                ],
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "selfAccountInfo"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "AuthorList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Author"
+                }
+              },
+              "totalCount": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "required": [
+              "list"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "VideoPage": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              },
+              "continueFlag": {
+                "type": "boolean"
+              },
+              "lastBuf": {
+                "type": "string",
+                "description": "原样传回，不透明分页游标"
+              }
+            },
+            "required": [
+              "objects"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "ShareLink": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "shortUrl": {
+                "type": "string",
+                "description": "分享页URL，不是MP4直链"
+              }
+            },
+            "required": [
+              "shortUrl"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "UnverifiedSearch": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "feedInfos": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true
+                }
+              }
+            },
+            "required": [
+              "feedInfos"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "UpstreamError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": true
+      },
+      "BusinessError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "description": "常见400",
+            "not": {
+              "enum": [
+                2000
+              ]
+            }
+          },
+          "data": {
+            "type": "object",
+            "nullable": true
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "msg"
+        ],
+        "additionalProperties": true
+      },
+      "LoginQrBusiness": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+              2000
+            ]
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "qrcode": {
+                "type": "string",
+                "description": "二维码内容URL，不是图片"
+              },
+              "tid": {
+                "type": "string",
+                "description": "异步任务ID"
+              }
+            },
+            "required": [
+              "qrcode",
+              "tid"
+            ],
+            "additionalProperties": true
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "LoginStatusBusiness": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+              2000
+            ]
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "异步任务/扫码状态"
+              },
+              "finder_id": {
+                "type": "string",
+                "description": "SUCCESS时的投手身份"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "additionalProperties": true
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "AccountListBusiness": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+              2000
+            ]
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "finder_id": {
+                  "type": "string"
+                },
+                "finder_name": {
+                  "type": "string"
+                },
+                "online": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "status": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "AuthorListBusiness": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+              2000
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuthorList"
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "VideoPageBusiness": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+              2000
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/VideoPage"
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "ShareLinkBusiness": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+              2000
+            ]
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "video_url": {
+                "type": "string",
+                "description": "来源shortUrl，为分享页，不是媒体直链"
+              }
+            },
+            "required": [
+              "video_url"
+            ],
+            "additionalProperties": true
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "data"
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "paths": {
+    "/api/wx/wx_user/login_qrcode/": {
+      "get": {
+        "operationId": "yiqiliangLoginQr",
+        "summary": "B1 生成投手扫码内容",
+        "x-validation": "source_only_not_production_tested",
+        "responses": {
+          "200": {
+            "description": "必须检查外层code；业务失败也可能HTTP200。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginQrBusiness"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BusinessError"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "依赖已有JWT、账号额度及归属、Redis和Celery。"
+      }
+    },
+    "/api/wx/wx_user/get_qrcode_status/": {
+      "get": {
+        "operationId": "yiqiliangLoginStatus",
+        "summary": "B2 查询扫码任务状态",
+        "x-validation": "source_only_not_production_tested",
+        "responses": {
+          "200": {
+            "description": "必须检查外层code；业务失败也可能HTTP200。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginStatusBusiness"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BusinessError"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "检查外层code=2000且data.status=SUCCESS，并取得finder_id。"
+      }
+    },
+    "/api/wx/wx_user/get_bind_wx_user_list/": {
+      "get": {
+        "operationId": "yiqiliangBoundAccounts",
+        "summary": "B3 查询已绑定投手",
+        "x-validation": "source_only_not_production_tested",
+        "responses": {
+          "200": {
+            "description": "必须检查外层code；业务失败也可能HTTP200。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/AccountListBusiness"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BusinessError"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "online",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "常用1",
+              "enum": [
+                0,
+                1
+              ]
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "常用1",
+              "enum": [
+                0,
+                1
+              ]
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "管理身份可能需要，取决于现有权限上下文"
+            }
+          }
+        ],
+        "description": "本契约为不传limit时的DetailResponse分支。原始序列化器可能含动态feed_cookie；网关只返回业务需要的字段，不向前端透传原始响应。"
+      }
+    },
+    "/api/wx/wx_search_account/": {
+      "post": {
+        "operationId": "yiqiliangAuthorSearch",
+        "summary": "B4 搜索目标作者",
+        "x-validation": "source_only_not_production_tested",
+        "responses": {
+          "200": {
+            "description": "必须检查外层code；业务失败也可能HTTP200。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/AuthorListBusiness"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BusinessError"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "finder_id": {
+                    "type": "string",
+                    "description": "执行投手身份"
+                  },
+                  "query": {
+                    "type": "string"
+                  },
+                  "flag": {
+                    "type": "integer",
+                    "format": "int64",
+                    "enum": [
+                      1
+                    ]
+                  },
+                  "currentPage": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 1
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "finder_id",
+                  "query",
+                  "flag",
+                  "currentPage",
+                  "pageSize"
+                ],
+                "additionalProperties": true
+              },
+              "example": {
+                "finder_id": "v_executor@finder",
+                "query": "作者昵称",
+                "flag": 1,
+                "currentPage": 1,
+                "pageSize": 5
+              }
+            }
+          }
+        },
+        "description": "原始HTTP作品作者列表路径是body.data.data.list。"
+      }
+    },
+    "/api/wx/wx_video_plan_detail/show_video_list/": {
+      "post": {
+        "operationId": "yiqiliangAuthorVideos",
+        "summary": "B5 作者作品与互动计数",
+        "x-validation": "source_only_not_production_tested",
+        "responses": {
+          "200": {
+            "description": "必须检查外层code；业务失败也可能HTTP200。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/VideoPageBusiness"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BusinessError"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "finder_id": {
+                    "type": "string",
+                    "description": "执行投手"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "目标作者"
+                  },
+                  "days": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "近N天；与自定义时间二选一",
+                    "minimum": 1
+                  },
+                  "start_time": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "自定义开始，Unix毫秒"
+                  },
+                  "end_time": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "自定义结束，Unix毫秒"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "每页条数",
+                    "minimum": 1
+                  },
+                  "lastBuf": {
+                    "type": "string",
+                    "description": "原样传前页游标"
+                  }
+                },
+                "required": [
+                  "finder_id",
+                  "username",
+                  "limit"
+                ],
+                "additionalProperties": true,
+                "oneOf": [
+                  {
+                    "required": [
+                      "days"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "start_time",
+                      "end_time"
+                    ]
+                  }
+                ]
+              },
+              "example": {
+                "finder_id": "v_executor@finder",
+                "username": "v_target@finder",
+                "days": 90,
+                "limit": 5
+              }
+            }
+          }
+        },
+        "description": "时间二选一：days，或数值类型Unix毫秒start_time/end_time。上游使用秒。原始HTTP作品数组是body.data.data.objects。"
+      }
+    },
+    "/api/wx/wx_video_plan_detail/get_video_short_link/": {
+      "post": {
+        "operationId": "yiqiliangShareLink",
+        "summary": "B6 取得分享链接（video_url不是MP4）",
+        "x-validation": "source_only_not_production_tested",
+        "responses": {
+          "200": {
+            "description": "必须检查外层code；业务失败也可能HTTP200。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ShareLinkBusiness"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BusinessError"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "export_id": {
+                    "type": "string"
+                  },
+                  "nonce_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "export_id",
+                  "nonce_id"
+                ],
+                "additionalProperties": true
+              },
+              "example": {
+                "export_id": "EXAMPLE_OPAQUE_EXPORT_ID",
+                "nonce_id": "EXAMPLE_NONCE"
+              }
+            }
+          }
+        },
+        "description": "后端自动选择用户可用在线投手，不按请求finder_id指定。返回data.video_url实际是上游shortUrl分享页。"
+      }
+    }
+  }
+}

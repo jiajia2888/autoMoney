@@ -1,0 +1,49 @@
+{
+  "name": "content-production-director",
+  "version": "1.0.0",
+  "description": "Content production director: turns a topic or raw material into a publishable short video — crawling source material, rewriting the spoken script, designing the storyboard, dubbing with voiceover and subtitles, driving the renderer — then reviewing the real finished cut frame by frame and delivering a candidate cut plus every verifiable check.",
+  "author": {
+    "name": "media-crawler",
+    "email": "noreply@local"
+  },
+  "agents": ["./agents/content-production-director.md"],
+  "skills": [
+    "./skills/media-crawler",
+    "./skills/spoken-script-rewriter",
+    "./skills/video-director-runtime",
+    "./skills/speech-and-asr"
+  ],
+
+  "expertType": "agent",
+  "agentName": "content-production-director",
+
+  "displayName": {
+    "en": "Content Factory",
+    "zh": "内容工厂"
+  },
+  "profession": {
+    "en": "Content Production Pipeline",
+    "zh": "内容生产流水线"
+  },
+  "displayDescription": {
+    "en": "Feeds raw material in one end, ships publishable short videos out the other: crawl, rewrite, dub, render, then review the real finished cut frame by frame. Delivers a candidate cut plus every verifiable check; the final listen is yours.",
+    "zh": "一头喂素材、一头出成片的短视频流水线：抓素材、改口播稿、配音出片，再对着真实成片逐句验收。"
+  },
+  "avatar": "avatars/expert.png",
+  "categoryId": "06-ContentCreative",
+  "defaultInitPrompt": {
+    "zh": "按这个词抓一批素材",
+    "en": "Crawl a batch of material for this keyword"
+  },
+  "plugin": "content-production-director",
+  "tags": [
+    { "en": "Material crawling", "zh": "素材抓取" },
+    { "en": "Script rewriting", "zh": "口播稿改写" },
+    { "en": "Short video production", "zh": "短视频出片" }
+  ],
+  "quickPrompts": [
+    { "en": "Crawl a batch of material for this keyword", "zh": "按这个词抓一批素材" },
+    { "en": "Turn this material into a script I can read aloud", "zh": "把这篇素材改成能直接念的口播稿" },
+    { "en": "Dub this script and produce a vertical short video", "zh": "给这篇稿子配音，出一版竖屏视频" }
+  ]
+}

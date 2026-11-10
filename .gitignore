@@ -1,0 +1,26 @@
+# Local credentials and data
+.DS_Store
+.env
+.env.*
+!.env.example
+config.json
+*.local.json
+*.log
+**/bin/
+**/Log/
+**/.venv/
+**/__pycache__/
+*.pyc
+**/node_modules/
+**/browser_data/
+**/data/
+*.db
+*.db-shm
+*.db-wal
+# Documents and collaboration rules are intentionally tracked.
+
+# Local monitor database and isolated login state
+.local/
+
+# Local skill distribution archive (not application source)
+/linjia-knowledge-portable.zip

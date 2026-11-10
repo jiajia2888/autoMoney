@@ -1,0 +1,1208 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "易起量方案：微信投手号上游接口",
+    "version": "1.0.0",
+    "description": "2026-11-09，按源码与真实只读请求整理。包含扫码、身份、作者、作品及分享链接。点赞分爱心likeCount与拇指favCount；无已确认收藏数、播放量、评论正文或MP4下载接口。页面内部接口，非公开开放平台协议。示例均脱敏；status验证见x-validation。"
+  },
+  "servers": [
+    {
+      "url": "https://channels.weixin.qq.com",
+      "description": "微信加热平台上游，须由后端持有自有投手Cookie调用"
+    }
+  ],
+  "security": [
+    {
+      "PromoteSession": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "PromoteSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "promotewebsessionid",
+        "description": "自行扫码取得的投手Cookie。浏览器Swagger不一定能跨域发送Cookie，使用后端或API客户端。"
+      }
+    },
+    "schemas": {
+      "Author": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "目标作者 finder_id，供作品查询使用"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称"
+          },
+          "headImgUrl": {
+            "type": "string",
+            "description": "头像URL"
+          },
+          "signature": {
+            "type": "string",
+            "description": "简介"
+          },
+          "authImgUrl": {
+            "type": "string",
+            "description": "认证图片"
+          },
+          "authProfession": {
+            "type": "string",
+            "description": "认证展示信息"
+          },
+          "exportUsername": {
+            "type": "string",
+            "description": "附加作者标识，原样保留"
+          },
+          "gender": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "liveStatus": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "permission": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "roi2PromoteFlag": {
+            "type": "integer",
+            "format": "int64",
+            "description": "未经枚举核验"
+          },
+          "isPrivate": {
+            "type": "integer",
+            "format": "int64",
+            "description": "样本为整数，未经完整枚举核验"
+          }
+        },
+        "required": [
+          "username"
+        ],
+        "additionalProperties": true
+      },
+      "Video": {
+        "type": "object",
+        "properties": {
+          "exportId": {
+            "type": "string",
+            "description": "网页作品标识；不可转成数值"
+          },
+          "globalExportId": {
+            "type": "string",
+            "description": "另一作品标识；不承诺跨会话稳定性"
+          },
+          "nonce": {
+            "type": "string",
+            "description": "分享接口 nonceId 的来源"
+          },
+          "description": {
+            "type": "string",
+            "description": "视频文案，不含自动语音转写"
+          },
+          "coverUrl": {
+            "type": "string",
+            "description": "封面，不是视频文件地址"
+          },
+          "createTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unix秒时间戳"
+          },
+          "likeCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "爱心点赞数，按易起量映射",
+            "nullable": true
+          },
+          "favCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "拇指点赞数，按易起量映射；不能当作收藏数",
+            "nullable": true
+          },
+          "forwardCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "转发/分享数量",
+            "nullable": true
+          },
+          "commentCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "评论数量，不是正文",
+            "nullable": true
+          },
+          "accountInfo": {
+            "$ref": "#/components/schemas/Author"
+          },
+          "flag": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          },
+          "deleteTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "样本为0，状态语义未核验"
+          },
+          "shoppingcartJumpinfo": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          },
+          "finderComponent": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          },
+          "profitableType": {
+            "type": "integer",
+            "format": "int64",
+            "description": "枚举未核验"
+          },
+          "inquireInfo": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "exportId"
+        ],
+        "additionalProperties": true
+      },
+      "LoginToken": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "用于生成二维码，原样保留整个data"
+              }
+            },
+            "required": [
+              "token"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "LoginStatus": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "integer",
+                "format": "int64",
+                "description": "0等待，5且acctStatus=1已扫码，1且acctStatus=1已确认，4过期"
+              },
+              "acctStatus": {
+                "type": "integer",
+                "format": "int64",
+                "description": "账户状态，按状态组合判断"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "selfAccountInfo": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "目标作者 finder_id，供作品查询使用"
+                  },
+                  "nickName": {
+                    "type": "string",
+                    "description": "昵称"
+                  },
+                  "headImgUrl": {
+                    "type": "string",
+                    "description": "头像URL"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "description": "简介"
+                  },
+                  "authImgUrl": {
+                    "type": "string",
+                    "description": "认证图片"
+                  },
+                  "authProfession": {
+                    "type": "string",
+                    "description": "认证展示信息"
+                  },
+                  "exportUsername": {
+                    "type": "string",
+                    "description": "附加作者标识，原样保留"
+                  },
+                  "gender": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "liveStatus": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "permission": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "roi2PromoteFlag": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "未经枚举核验"
+                  },
+                  "isPrivate": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "样本为整数，未经完整枚举核验"
+                  }
+                },
+                "required": [
+                  "username"
+                ],
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "selfAccountInfo"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "AuthorList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Author"
+                }
+              },
+              "totalCount": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "required": [
+              "list"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "VideoPage": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              },
+              "continueFlag": {
+                "type": "boolean"
+              },
+              "lastBuf": {
+                "type": "string",
+                "description": "原样传回，不透明分页游标"
+              }
+            },
+            "required": [
+              "objects"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "ShareLink": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "shortUrl": {
+                "type": "string",
+                "description": "分享页URL，不是MP4直链"
+              }
+            },
+            "required": [
+              "shortUrl"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "UnverifiedSearch": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "feedInfos": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true
+                }
+              }
+            },
+            "required": [
+              "feedInfos"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "UpstreamError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "paths": {
+    "/promote/api/web/auth/auth_login_token": {
+      "post": {
+        "operationId": "promoteLoginToken",
+        "summary": "U1 取得扫码token",
+        "parameters": [
+          {
+            "name": "_pageUrl",
+            "in": "query",
+            "required": true,
+            "description": "传未编码的URL给HTTP库，由HTTP库编码一次",
+            "schema": {
+              "type": "string",
+              "default": "https://channels.weixin.qq.com/promote/pages/platform/login-iframe"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginToken"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "token": "EXAMPLE_QR_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginToken"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "token": "EXAMPLE_QR_TOKEN"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "x-validation": "live_login_success"
+      }
+    },
+    "/promote/api/web/auth/auth_login_status": {
+      "post": {
+        "operationId": "promoteLoginStatus",
+        "summary": "U2 查询扫码状态并接收Set-Cookie",
+        "parameters": [
+          {
+            "name": "_pageUrl",
+            "in": "query",
+            "required": true,
+            "description": "传未编码的URL给HTTP库，由HTTP库编码一次",
+            "schema": {
+              "type": "string",
+              "default": "https://channels.weixin.qq.com/promote/pages/platform/login-iframe"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token"
+                ],
+                "additionalProperties": true
+              },
+              "example": {
+                "token": "EXAMPLE_QR_TOKEN"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginStatus"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "status": 1,
+                    "acctStatus": 1
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Set-Cookie": {
+                "description": "手机确认后下发promotewebsessionid。此值不会写入文档。",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginStatus"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "status": 1,
+                    "acctStatus": 1
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Set-Cookie": {
+                "description": "手机确认后下发promotewebsessionid。此值不会写入文档。",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "x-validation": "live_login_success",
+        "description": "请求体传回U1的整个data。status=1且acctStatus=1后检查Set-Cookie并调用U3。"
+      }
+    },
+    "/promote/api/web/transfer/MMFinderPromotionLiveDspApiSvr/getLivePromotionUserProfile": {
+      "post": {
+        "operationId": "promoteProfile",
+        "summary": "U3 核验投手身份",
+        "parameters": [
+          {
+            "name": "_pageUrl",
+            "in": "query",
+            "required": true,
+            "description": "传未编码的URL给HTTP库，由HTTP库编码一次",
+            "schema": {
+              "type": "string",
+              "default": "https://channels.weixin.qq.com/promote/pages/platform/home"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Profile"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "selfAccountInfo": {
+                      "username": "v_executor@finder",
+                      "nickName": "示例投手"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Profile"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "selfAccountInfo": {
+                      "username": "v_executor@finder",
+                      "nickName": "示例投手"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-validation": "live_identity_success"
+      }
+    },
+    "/promote/api/web/transfer/MmFinderPromotionApiSvr/searchAccount": {
+      "post": {
+        "operationId": "promoteAuthorSearch",
+        "summary": "U4 搜索作者",
+        "parameters": [
+          {
+            "name": "_pageUrl",
+            "in": "query",
+            "required": true,
+            "description": "传未编码的URL给HTTP库，由HTTP库编码一次",
+            "schema": {
+              "type": "string",
+              "default": "https://channels.weixin.qq.com/promote/pages/platform/create-order"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "flag": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "本交付验证值1",
+                    "enum": [
+                      1
+                    ]
+                  },
+                  "currentPage": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "从1开始",
+                    "minimum": 1
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "上限未核验",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "query",
+                  "flag",
+                  "currentPage",
+                  "pageSize"
+                ],
+                "additionalProperties": true
+              },
+              "example": {
+                "query": "风景",
+                "flag": 1,
+                "currentPage": 1,
+                "pageSize": 5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/AuthorList"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "list": [
+                      {
+                        "username": "v_target@finder",
+                        "nickName": "示例作者"
+                      }
+                    ],
+                    "totalCount": 1
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/AuthorList"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "list": [
+                      {
+                        "username": "v_target@finder",
+                        "nickName": "示例作者"
+                      }
+                    ],
+                    "totalCount": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-validation": "live_nonempty_form_without_baseReq",
+        "description": "最小表单已验证可省略baseReq，返回data.list。"
+      }
+    },
+    "/promote/api/web/transfer/MmFinderPromotionApiSvr/getFinderObject": {
+      "post": {
+        "operationId": "promoteAuthorVideos",
+        "summary": "U5 作者作品、文案与互动计数",
+        "parameters": [
+          {
+            "name": "_pageUrl",
+            "in": "query",
+            "required": true,
+            "description": "传未编码的URL给HTTP库，由HTTP库编码一次",
+            "schema": {
+              "type": "string",
+              "default": "https://channels.weixin.qq.com/promote/pages/platform/create-order"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "encryptedUsername": {
+                    "type": "string",
+                    "description": "目标作者username"
+                  },
+                  "startTs": {
+                    "type": "string",
+                    "description": "Unix秒时间戳"
+                  },
+                  "endTs": {
+                    "type": "string",
+                    "description": "Unix秒时间戳"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "已验证1和5，上限未核验",
+                    "minimum": 1
+                  },
+                  "lastBuf": {
+                    "type": "string",
+                    "description": "后续页传回前页游标"
+                  }
+                },
+                "required": [
+                  "encryptedUsername",
+                  "startTs",
+                  "endTs",
+                  "limit"
+                ],
+                "additionalProperties": true
+              },
+              "example": {
+                "encryptedUsername": "v_target@finder",
+                "startTs": "1786320000",
+                "endTs": "1794096000",
+                "limit": 5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/VideoPage"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "objects": [
+                      {
+                        "exportId": "EXAMPLE_OPAQUE_EXPORT_ID",
+                        "globalExportId": "EXAMPLE_GLOBAL_EXPORT_ID",
+                        "nonce": "EXAMPLE_NONCE",
+                        "description": "这是已脱敏的视频文案示例",
+                        "coverUrl": "https://media.example.com/example-cover.jpg",
+                        "createTime": 1794121716,
+                        "likeCount": 899,
+                        "favCount": 826,
+                        "forwardCount": 218,
+                        "commentCount": 15,
+                        "deleteTime": 0,
+                        "accountInfo": {
+                          "username": "v_target@finder",
+                          "nickName": "示例作者",
+                          "headImgUrl": "https://media.example.com/example-avatar.jpg",
+                          "signature": "示例简介"
+                        },
+                        "flag": {
+                          "isPrivate": false,
+                          "isChecking": false,
+                          "hasShoppingCart": false
+                        },
+                        "shoppingcartJumpinfo": {},
+                        "finderComponent": {},
+                        "profitableType": 0,
+                        "inquireInfo": {}
+                      }
+                    ],
+                    "continueFlag": true,
+                    "lastBuf": "EXAMPLE_NEXT_CURSOR"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/VideoPage"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "objects": [
+                      {
+                        "exportId": "EXAMPLE_OPAQUE_EXPORT_ID",
+                        "globalExportId": "EXAMPLE_GLOBAL_EXPORT_ID",
+                        "nonce": "EXAMPLE_NONCE",
+                        "description": "这是已脱敏的视频文案示例",
+                        "coverUrl": "https://media.example.com/example-cover.jpg",
+                        "createTime": 1794121716,
+                        "likeCount": 899,
+                        "favCount": 826,
+                        "forwardCount": 218,
+                        "commentCount": 15,
+                        "deleteTime": 0,
+                        "accountInfo": {
+                          "username": "v_target@finder",
+                          "nickName": "示例作者",
+                          "headImgUrl": "https://media.example.com/example-avatar.jpg",
+                          "signature": "示例简介"
+                        },
+                        "flag": {
+                          "isPrivate": false,
+                          "isChecking": false,
+                          "hasShoppingCart": false
+                        },
+                        "shoppingcartJumpinfo": {},
+                        "finderComponent": {},
+                        "profitableType": 0,
+                        "inquireInfo": {}
+                      }
+                    ],
+                    "continueFlag": true,
+                    "lastBuf": "EXAMPLE_NEXT_CURSOR"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-validation": "live_nonempty_and_next_page",
+        "description": "表单，时间为秒，lastBuf原样回传。已取得两页不同作品；未验全历史完整性。likeCount爱心、favCount拇指，不提供已确认的收藏量或播放量。"
+      }
+    },
+    "/promote/api/web/transfer/MmFinderAssistantBroker/getObjectShortLink": {
+      "post": {
+        "operationId": "promoteVideoShareLink",
+        "summary": "U6 获取分享链接（非MP4直链）",
+        "parameters": [
+          {
+            "name": "_pageUrl",
+            "in": "query",
+            "required": true,
+            "description": "传未编码的URL给HTTP库，由HTTP库编码一次",
+            "schema": {
+              "type": "string",
+              "default": "https://channels.weixin.qq.com/promote/pages/platform/short-video/detail"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "exportId": {
+                    "type": "string",
+                    "description": "作品exportId"
+                  },
+                  "nonceId": {
+                    "type": "string",
+                    "description": "作品nonce"
+                  }
+                },
+                "required": [
+                  "exportId",
+                  "nonceId"
+                ],
+                "additionalProperties": true
+              },
+              "example": {
+                "exportId": "EXAMPLE_OPAQUE_EXPORT_ID",
+                "nonceId": "EXAMPLE_NONCE"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ShareLink"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "shortUrl": "https://weixin.qq.com/sph/EXAMPLE"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ShareLink"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "shortUrl": "https://weixin.qq.com/sph/EXAMPLE"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-validation": "live_share_url_success",
+        "description": "只返回分享页地址，不能当作文件下载能力。"
+      }
+    },
+    "/promote/api/web/transfer/MMFinderPromotionLiveDspApiSvr/searchFinderObject": {
+      "post": {
+        "operationId": "promoteVideoFilterUnverified",
+        "summary": "U7 作品查询：未验证有效结果",
+        "parameters": [
+          {
+            "name": "_pageUrl",
+            "in": "query",
+            "required": true,
+            "description": "传未编码的URL给HTTP库，由HTTP库编码一次",
+            "schema": {
+              "type": "string",
+              "default": "https://channels.weixin.qq.com/promote/pages/platform/create-order"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "targetUsername": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "format": "int64"
+                  }
+                },
+                "required": [
+                  "query",
+                  "targetUsername",
+                  "limit",
+                  "offset"
+                ],
+                "additionalProperties": true
+              },
+              "example": {
+                "query": "风景",
+                "targetUsername": "",
+                "limit": 5,
+                "offset": 0
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/UnverifiedSearch"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "feedInfos": []
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "检查HTTP及业务错误；201也是正常状态。Cookie值不在示例中。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/UnverifiedSearch"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpstreamError"
+                    }
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "feedInfos": []
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-validation": "empty_result_only_do_not_use_as_global_search",
+        "description": "未指定作者时实测feedInfos=[]；不声明全站关键词视频搜索可用。"
+      }
+    }
+  }
+}

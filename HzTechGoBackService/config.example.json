@@ -1,0 +1,12 @@
+{
+  "address": "127.0.0.1:9010",
+  "pages_dir": "../HxTechPages",
+  "mysql_dsn": "",
+  "sqlite_path": "../.local/monitor.db",
+  "python": "../.venv/bin/python",
+  "collector_script": "../scripts/douyin_collector.py",
+  "profile_dir": "../.local/douyin-profile",
+  "credentials_file": "../.local/douyin-credentials.json",
+  "wechat_session_file": "../.local/wechat-session.enc",
+  "wechat_dns_server": ""
+}

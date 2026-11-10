@@ -1,0 +1,8 @@
+---
+description: autoMoney 项目结构与多工具协作规范
+alwaysApply: true
+---
+
+阅读并遵守仓库根 AGENTS.md；开始任务前阅读 README.md、docs/architecture.md、docs/handoff.md。
+AGENTS.md 是共同规范的唯一来源，勿在此复制另一套规则。
+保留他人未提交修改；结束时将实际验证结果与下一步写入 docs/handoff.md。

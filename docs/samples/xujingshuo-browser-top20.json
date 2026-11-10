@@ -1,0 +1,122 @@
+{
+  "observed_date": "2026-11-08",
+  "account_name": "徐晶说",
+  "douyin_number": "80185543890",
+  "source": "logged-in browser rendered work cards, not crawler API",
+  "scanned_unique_cards": 349,
+  "page_end": "暂时没有更多了",
+  "display_above_10000_count": 212,
+  "boundary_count": 1,
+  "raw_like_counts_verified": false,
+  "scope": "Top 20 samples persisted; full 349-card dataset not persisted",
+  "boundary": [
+    {
+      "url": "https://www.douyin.com/video/7700913674826894592",
+      "title": "《反安慰养育》",
+      "likes_display": "1.0万",
+      "classification": "needs_raw_count"
+    }
+  ],
+  "top20": [
+    {
+      "url": "https://www.douyin.com/video/7641452844746427663",
+      "title_summary": "一字藏天地，青色润古今。",
+      "likes_display": "104.8万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7619954868203031854",
+      "title_summary": "人生的意义是什么？既然人都要死亡，那么活着的意义是什么？",
+      "likes_display": "84.0万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7639685139231984939",
+      "title_summary": "好好生活，好好被记住",
+      "likes_display": "71.8万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7672711715619900708",
+      "title_summary": "你出生的那个月，早就被一朵花写好了注脚",
+      "likes_display": "43.6万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7631859711297539343",
+      "title_summary": "麒麟是雄的还是雌的？",
+      "likes_display": "36.5万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7619959025689447726",
+      "title_summary": "十个小故事，说透了我们的一生",
+      "likes_display": "32.0万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7637423770974490041",
+      "title_summary": "中国孩子必须要知道的文学常识",
+      "likes_display": "31.7万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7618546814077144366",
+      "title_summary": "一定要选择与人品好的人交朋友",
+      "likes_display": "30.6万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7643395467615019363",
+      "title_summary": "麒麟是雄的还是雌的？",
+      "likes_display": "28.5万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7619957775552040202",
+      "title_summary": "选对了家庭，就是选对了后半辈子的生活底色。",
+      "likes_display": "27.9万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7619279933994552626",
+      "title_summary": "为什么沙漠没有水，却偏偏这两个字的偏旁都有三点水呢？",
+      "likes_display": "27.4万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7645961936017919267",
+      "title_summary": "人生如棋，落子无悔。十个小故事让你受益一生。",
+      "likes_display": "27.3万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7641168942475545890",
+      "title_summary": "他以诗为刃、以志为光，于风雨岁月中写山河、担家国、立信仰。",
+      "likes_display": "26.8万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7629665744447360256",
+      "title_summary": "嘴下留情，利中留余，才上留德，心中留路。",
+      "likes_display": "26.7万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7641227441897528000",
+      "title_summary": "孩子必须要知道的文学常识，收藏起来让孩子背背提升文学素养",
+      "likes_display": "26.4万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7624427521936870656",
+      "title_summary": "愿你的家庭一代更比一代强",
+      "likes_display": "26.1万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7636306828531486006",
+      "title_summary": "我们穷极一生追求的幸福，不在过去，不在未来，就在当下！",
+      "likes_display": "24.9万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7638571826913889551",
+      "title_summary": "能影响人一生的七大定律，你看懂了几个？",
+      "likes_display": "24.6万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7628866768303295779",
+      "title_summary": "世界观是看问题的高度，价值观是看问题的角度，人生观是看问题的",
+      "likes_display": "24.2万"
+    },
+    {
+      "url": "https://www.douyin.com/video/7651887085611126059",
+      "title_summary": "弘一法师的五句话，你悟到了几句？",
+      "likes_display": "24.0万"
+    }
+  ]
+}
